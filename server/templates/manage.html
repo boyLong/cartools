@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>管理</title>
+    <link rel="stylesheet" href="/static/layui/css/layui.css" media="all">
+    <style>
+        .layui-table-view {margin-left: 20px}
+    </style>
+</head>
+<body>
+<div class="layui-form">
+  <div class="layui-form-item">
+    <div class="layui-inline">
+      <label class="layui-form-label">录入日期</label>
+      <div class="layui-input-inline">
+        <input type="text" class="layui-input date" id="startInput" placeholder="yyyy-MM-dd">
+      </div>
+      <div class="layui-input-inline">
+        <input type="text" class="layui-input date" id="endInput" placeholder="yyyy-MM-dd">
+      </div>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <div class="layui-inline">
+      <label class="layui-form-label">打证日期</label>
+      <div class="layui-input-inline">
+        <input type="text" class="layui-input date" id="startPrint" placeholder="yyyy-MM-dd">
+      </div>
+      <div class="layui-input-inline">
+        <input type="text" class="layui-input date" id="endPrint" placeholder="yyyy-MM-dd">
+      </div>
+    </div>
+  </div>
+      <div class="layui-form-item">
+    <div class="layui-inline">
+      <label class="layui-form-label">问卷星日期</label>
+      <div class="layui-input-inline">
+        <input type="text" class="layui-input date" id="startWJX" placeholder="yyyy-MM-dd">
+      </div>
+      <div class="layui-input-inline">
+        <input type="text" class="layui-input date" id="endPrWJX" placeholder="yyyy-MM-dd">
+      </div>
+    </div>
+  </div>
+  <div class="layui-form-item">
+          <div class="layui-inline">
+            <label class="layui-form-label">车主姓名</label>
+        <div class="layui-input-inline">
+          <input class="layui-input" name="name" id="name" autocomplete="off">
+        </div>
+      </div>
+    <div class="layui-input-block">
+
+      <button type="submit" class="layui-btn" lay-submit="" id="search" lay-filter="search">搜索</button>
+      <button type="reset" class="layui-btn" id="to_excel" lay-filter="to_excel">导出</button>
+      <button type="reset" class="layui-btn layui-btn-danger" id="del" style="float: right;margin-right: 200px" lay-filter="to_exce">删除</button>
+    </div>
+  </div>
+</div>
+
+<table class="layui-hide"   id="LAY_table_info" lay-filter="manage"></table>
+
+<script src="/static/layui/layui.js" charset="utf-8"></script>
+<script>
+layui.use(['laydate','table'], function(){
+  var laydate = layui.laydate, table=layui.table, $=layui.jquery
+
+  //常规用法
+  laydate.render({
+    elem: '#startInput'
+  });
+
+  laydate.render({
+    elem: '#endInput'
+  });
+  laydate.render({
+    elem: '#startPrint'
+  });
+  laydate.render({
+    elem: '#endPrint'
+  });
+  laydate.render({
+    elem: '#startWJX'
+  });
+   laydate.render({
+    elem: '#endPrWJX'
+  });
+
+    table.on('edit(manage)', function(obj) {
+
+      var value = obj.value //得到修改后的值
+      , id = obj.data.id //得到所在行所有键值
+      var key =  obj.field
+      var data = {
+            "id": id,
+        }
+        data[key]=value
+       $.ajax({
+        type: "post",
+        url: "update_manage",
+        data: data,
+        async:true, // 异步请求
+        dataType: 'json', // 返回对象
+        success: function(res) {
+                     layer.msg("修改成功")
+
+        },
+        error: function(data) {
+            layer.msg("提交失败")
+        }
+    })
+    })
+  var info = table.render({
+            elem: '#LAY_table_info'
+            ,url: 'manage_query'
+            ,width: 1450
+            ,cols: [[
+               {checkbox: true, fixed: true}
+              ,{field:'wqx_time', title: '问卷星日期', width:170}
+              ,{field:'create_time', title: '录入日期', width:110}
+              ,{field:'printDate', title: '打证日期', width:110, sort: true}
+              ,{field:'name', title: '姓名', width:100,}
+              ,{field:'WPMI', title: '车辆识别号',width:190, }
+              ,{field:'brand', title: '品牌型号',width:190,}
+              ,{field:'number', title: '车牌号码', width:120,edit:"text"}
+              ,{field:'mortgage', title: '抵押备注',width:120, edit:"text" }
+               ,{field:'remark', title: '报销备注', }
+              ,{field:'saleName', title: '销售', }
+            ]]
+            ,id: 'info_table'
+            ,page: true
+            ,height: 310
+          });
+
+  $("#search").on("click",function (){
+    var startInput = $("#startInput").val()
+    var endInput = $("#endInput").val()
+    var startPrint = $("#startPrint").val()
+    var endPrint = $("#endPrint").val()
+
+    var startWJX = $("#startWJX").val()
+    var endPrWJX = $("#endPrWJX").val()
+    var name = $("#name").val()
+    table.reload('info_table', {
+              page: {
+                curr: 1 //重新从第 1 页开始
+              }
+              ,where: {
+                name: name,
+                startInput:startInput,
+                endInput:endInput,
+                startPrint:startPrint,
+                endPrint:endPrint,
+            startWJX:startWJX,
+            endPrWJX:endPrWJX
+
+           }
+        }, 'data')
+
+  })
+  $("#del").on("click",function (){
+     var checkStatus = table.checkStatus('info_table'),data = checkStatus.data;
+     var id_list = []
+     for(let item of data){
+         id_list.push(item.id)
+     }
+    console.log(id_list)
+    var startInput = $("#startInput").val()
+    var endInput = $("#endInput").val()
+    var startPrint = $("#startPrint").val()
+    var endPrint = $("#endPrint").val()
+     var startWJX = $("#startWJX").val()
+    var endPrWJX = $("#endPrWJX").val()
+    var name =  $("#name").val()
+    layer.msg('您真的想好要删除了吗 <br>删除后不可恢复哦<br>', {
+        time: 20000, //20s后自动关闭
+        btn: ['我确认', '不删了'],
+         yes: function (){
+             layer.closeAll()
+              layer.open({
+                type: 1
+                ,title: false //不显示标题栏
+                ,closeBtn: false
+                ,area: '300px;'
+                ,shade: 0.8
+                ,id: 'del1' //设定一个id，防止重复弹出
+                ,btn: ['真要删除！', '再想一想~']
+                ,btnAlign: 'c'
+                ,moveType: 1 //拖拽模式，0或者1
+                ,content: `<div style="padding: 50px; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;" xmlns="http://www.w3.org/1999/html">
+                            <br>即将要删除<br>-----录入时间  ${startInput || "一开始"} -到- ${endInput || "今天"} <br>-----打证件时间  ${startPrint || "一开始"} -到- ${endPrint || "今天"}<br>
+                            <br>-----问卷星时间  ${startWJX || "一开始"} -到- ${endPrWJX || "今天"}<br>
+                            -----姓名包含${name}<br>中的数据 </div>`
+                ,yes: function(layero){
+                          $.ajax({
+                              type: "post",
+                              url: "del_data",
+                              data: {
+                                  "startInput": startInput,
+                                  "endInput": endInput,
+                                  "startPrint": startPrint,
+                                  "endPrint": endPrint,
+                                  "name":name,
+                                   startWJX:startWJX,
+                                   endPrWJX:endPrWJX,
+
+                                  "id":JSON.stringify(id_list)
+                              },
+                              async:true, // 异步请求
+                              dataType: 'json', // 返回对象
+                              success: function(data) {
+                                  layer.closeAll()
+                                  layer.msg("成功")
+                                    table.reload('info_table', {
+                                          page: {
+                                            curr: 1 //重新从第 1 页开始
+                                          }
+                                          ,where: {
+                                            startInput:startInput,
+                                            endInput:endInput,
+                                            startPrint:startPrint,
+                                            endPrint:endPrint,
+                                            name:name
+
+                                       }
+                                    }, 'data')
+                              },
+                              error: function(data) {
+                                  layer.msg("提交失败")
+                              }
+                          })
+                }
+              });
+         }
+      });
+
+  })
+  $("#to_excel").on("click",function (){
+    var startInput = $("#startInput").val()
+    var endInput = $("#endInput").val()
+    var startPrint = $("#startPrint").val()
+    var endPrint = $("#endPrint").val()
+    var search_name = $("#name").val()
+      var startWJX = $("#startWJX").val()
+    var endPrWJX = $("#endPrWJX").val()
+    var today = new Date()
+    var month = today.getMonth()+1+''
+    if(month.length===1){
+      month = 0+month
+    }
+    var day = today.getDay()+''
+      if(day.length===1){
+      day = 0+day
+    }
+    var name = today.getFullYear()+month+day
+           $.ajax({
+            type: "get",
+            url: "to_data",
+            data: {
+                "startInput": startInput,
+                "endInput": endInput,
+                "startPrint": startPrint,
+                "endPrint": endPrint,
+                 startWJX:startWJX,
+                 endPrWJX:endPrWJX,
+
+                 "name": search_name
+
+            },
+            async:true, // 异步请求
+            dataType: 'json', // 返回对象
+            success: function(data) {
+                table.exportFile(info.config.id, data.data, 'xls',"服务站数据"+name);
+            },
+            error: function(data) {
+                layer.msg("提交失败")
+            }
+        })
+
+
+  })
+});
+</script>
+</body>
+</html>
+</body>
+</html>

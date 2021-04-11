@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>输出</title>
+    <link rel="stylesheet" href="/static/layui/css/layui.css" media="all">
+    <style>
+        .layui-table-view {margin-left: 20px}
+        .layui-tab-card>.layui-tab-title .layui-this {background-color: #009688;color: white}
+    </style>
+</head>
+<body>
+
+<div class="layui-tab layui-tab-card" lay-filter="out" style="width: 280px">
+  <ul class="layui-tab-title layui-bg-gray" style="width: 280px" >
+    <li>税表模式</li>
+    <li class="layui-this" >受理模式</li>
+    <li>牌证模式</li>
+  </ul>
+</div>
+<script src="/static/layui/layui.js" charset="utf-8"></script>
+
+<div class="layui-container">
+    <div class="layui-row layui-col-space20">
+        <div class="layui-col-sm3" style="line-height: 50px">
+            <div class="layui-row ">
+                <div class="layui-col-sm2" style="line-height: 50px">
+                    F1:
+                </div>
+                <div class="layui-col-sm10 layui-bg-green" id='F1' style="line-height: 50px;text-align: center">
+
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-sm3" style="line-height: 50px">
+            <div class="layui-row ">
+                <div class="layui-col-sm2" style="line-height: 50px">
+                    F2:
+                </div>
+                <div class="layui-col-sm10 layui-bg-green" id="F2" style="line-height: 50px;text-align: center">
+
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-sm3" style="line-height: 50px">
+            <div class="layui-row ">
+                <div class="layui-col-sm2" style="line-height: 50px">
+                    F3:
+                </div>
+                <div class="layui-col-sm10 layui-bg-green" id="F3" style="line-height: 50px;text-align: center">
+
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-sm3" style="line-height: 50px">
+            <div class="layui-row ">
+                <div class="layui-col-sm2" style="line-height: 50px">
+                    F4:
+                </div>
+                <div class="layui-col-sm10 layui-bg-green" id="F4" style="line-height: 50px;text-align: center">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="layui-row layui-col-space20">
+        <div class="layui-col-sm3" style="line-height: 50px">
+            <div class="layui-row ">
+                <div class="layui-col-sm2" style="line-height: 50px">
+                    F5:
+                </div>
+                <div class="layui-col-sm10 layui-bg-green" id="F5" style="line-height: 50px;text-align: center">
+
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-sm3" style="line-height: 50px">
+            <div class="layui-row ">
+                <div class="layui-col-sm2" style="line-height: 50px">
+                    F6:
+                </div>
+                <div class="layui-col-sm10 layui-bg-green" id="F6" style="line-height: 50px;text-align: center">
+
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-sm3" style="line-height: 50px">
+            <div class="layui-row ">
+                <div class="layui-col-sm2" style="line-height: 50px">
+                    F7:
+                </div>
+                <div class="layui-col-sm10 layui-bg-green" id="F7" style="line-height: 50px;text-align: center">
+
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-sm3" style="line-height: 50px">
+            <div class="layui-row ">
+                <div class="layui-col-sm2" style="line-height: 50px">
+                    F8:
+                </div>
+                <div class="layui-col-sm10 layui-bg-green" id="F8" style="line-height: 50px;text-align: center">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="layui-row layui-col-space20">
+        <div class="layui-col-sm3" style="line-height: 50px">
+            <div class="layui-row ">
+                <div class="layui-col-sm2" style="line-height: 50px">
+                    F9:
+                </div>
+                <div class="layui-col-sm10 layui-bg-green" id="F9" style="line-height: 50px;text-align: center">
+
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-sm3" style="line-height: 50px">
+            <div class="layui-row ">
+                <div class="layui-col-sm2" style="line-height: 50px">
+                    F10:
+                </div>
+                <div class="layui-col-sm10 layui-bg-green" id="F10" style="line-height: 50px;text-align: center">
+
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-sm3" style="line-height: 50px">
+            <div class="layui-row ">
+                <div class="layui-col-sm2" style="line-height: 50px">
+                    F11:
+                </div>
+                <div class="layui-col-sm10 layui-bg-green" id="F11" style="line-height: 50px;text-align: center">
+
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-sm3" style="line-height: 50px">
+            <div class="layui-row ">
+                <div class="layui-col-sm2"  style="line-height: 50px">
+                    F12:
+                </div>
+                <div class="layui-col-sm10 layui-bg-green" id="F12" style="line-height: 50px;text-align: center">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="layui-row layui-col-space20">
+      <div class="layui-col-sm3" style="line-height: 50px">
+            <div class="layui-row ">
+                <div class="layui-col-sm2" style="line-height: 50px">
+                    ~:
+                </div>
+                <div class="layui-col-sm10 layui-bg-green" id='left' style="line-height: 50px;text-align: center">
+                        邮政编码
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="Table" style="margin-left: 20px;margin-top: 50px">
+  <div class="layui-inline">
+    <input class="layui-input" name="search" id="search" autocomplete="off">
+  </div>
+  <button class="layui-btn" data-type="reload">搜索(车主姓名)</button>
+</div>
+
+<div class="layui-row">
+    <div class="layui-col-md8">
+        <table class="layui-hide"   id="LAY_table_user" lay-filter="user"></table>
+    </div>
+    <div class="layui-col-md4">
+
+        <form class="layui-form" action="" lay-filter="example">
+            <div class="layui-form-item">
+                <label class="layui-form-label">抵押公司</label>
+                <div class="layui-input-block" style="width: 200px">
+                  <select name="interest" id="mortgage" lay-filter="mortgage">
+
+
+                  </select>
+                </div>
+            </div>
+            <div class="layui-form-item" style="margin-left: 50px;margin-top: 50px">
+                <button type="button" id="add_mortgage" class="layui-btn">添加抵押公司</button>
+            </div>
+               <div class="layui-form-item" style="margin-left: 50px;margin-top: 50px">
+                <button type="button" id="update_mortgage" class="layui-btn">修改抵押公司</button>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+
+
+</script>
+<script>
+    layui.use(['element','table',"upload","form"], function(){
+        window.mortgage = {}
+        var element=layui.element,$=layui.jquery,table=layui.table, form = layui.form
+        form.on('submit(submit)', function(data){
+            data = {
+                  company:data.field.company,
+                  code:data.field.code,
+                  phone:data.field.phone,
+                  address:data.field.address,
+                  postcode:data.field.postcode
+              }
+        $.ajax({
+            type: "post",
+            url: "add_company",
+            data: data,
+            async:true, // 异步请求
+            dataType: 'json', // 返回对象
+            success: function(data) {
+                    $.ajax({
+                        url: 'mortgage',
+                        dataType: 'json',
+                        type: 'get',
+                        success: function (data) {
+                             $('#mortgage')[0].options.length=0
+
+                            $.each(data.data, function (index, item) {
+                                window.mortgage[item.id] = item
+                                $('#mortgage').append(new Option(item.value, item.id));// 下拉菜单里添加元素
+                            });
+                            layui.form.render("select")
+                            layer.closeAll()
+                        }
+                    })
+                     layer.msg("成功")
+
+            },
+            error: function(data) {
+                layer.msg("提交失败")
+            }
+        })
+        return false;
+      });
+        form.on('submit(submit_update)', function(data){
+            data = {
+                  id:$("#mortgage").val(),
+                  company:data.field.company,
+                  code:data.field.code,
+                  phone:data.field.phone,
+                  address:data.field.address,
+                  postcode:data.field.postcode
+              }
+        $.ajax({
+            type: "post",
+            url: "add_company",
+            data: data,
+            async:true, // 异步请求
+            dataType: 'json', // 返回对象
+            success: function(data) {
+                    $.ajax({
+                        url: 'mortgage',
+                        dataType: 'json',
+                        type: 'get',
+                        success: function (data) {
+                             $('#mortgage')[0].options.length=0
+
+                            $.each(data.data, function (index, item) {
+                                window.mortgage[item.id] = item
+                                $('#mortgage').append(new Option(item.value, item.id));// 下拉菜单里添加元素
+                            });
+                            layui.form.render("select")
+                            layer.closeAll()
+                        }
+                    })
+                     layer.msg("成功")
+
+            },
+            error: function(data) {
+                layer.msg("提交失败")
+            }
+        })
+        return false;
+      });
+        $.ajax({
+            url: 'mortgage',
+            dataType: 'json',
+            type: 'get',
+            success: function (data) {
+                $.each(data.data, function (index, item) {
+                    window.mortgage[item.id] = item
+                    $('#mortgage').append(new Option(item.value, item.id));// 下拉菜单里添加元素
+                });
+                layui.form.render("select")
+            }
+        })
+
+
+        window.card=1
+        $("#F1")[0].innerHTML="姓名"
+        $("#F2")[0].innerHTML="证件号码"
+        $("#F3")[0].innerHTML="身份证地址"
+        $("#F4")[0].innerHTML="邮寄地址"
+        $("#F5")[0].innerHTML="电话号码"
+        $("#F6")[0].innerHTML="抵押公司名称"
+        $("#F7")[0].innerHTML="抵押公司统一社会代码"
+        $("#F8")[0].innerHTML="抵押公司地址"
+        $("#F9")[0].innerHTML="抵押公司电话"
+        $("#F10")[0].innerHTML="抵押公司邮编"
+        $("#F11")[0].innerHTML="一键填写登记信息"
+        $("#F12")[0].innerHTML="一键填写抵押信息"
+
+        element.on('tab(out)', function(data){
+            window.card=data.index;
+            if(window.user_id){
+              $.ajax({
+                        type: "post",
+                        url: "update_key",
+                        data: {
+                            "id": window.user_id,
+                            "module":window.card,
+                            "mortgage_id": $("#mortgage").val()
+                        },
+                        async:true, // 异步请求
+                        dataType: 'json', // 返回对象
+                        success: function(data) {
+                            layer.msg("切换成功")
+                        },
+                        error: function(data) {
+                            layer.msg("切换失败")
+                        }
+                    })
+            }
+            if(window.card==0){
+              $("#F1")[0].innerHTML="姓名"
+              $("#F2")[0].innerHTML="电话号码"
+              $("#F3")[0].innerHTML="证件号码"
+              $("#F4")[0].innerHTML="发票代码"
+              $("#F5")[0].innerHTML="发票号码"
+              $("#F6")[0].innerHTML="价税合计"
+              $("#F7")[0].innerHTML="发动机"
+              $("#F8")[0].innerHTML="车辆识别代号"
+              $("#F9")[0].innerHTML="合格证编号"
+              $("#F10")[0].innerHTML="品牌型号"
+              $("#F11")[0].innerHTML="生产企业名称"
+              $("#F12")[0].innerHTML="一键填写税表"
+
+          }else if(window.card==1){
+              $("#F1")[0].innerHTML="姓名"
+              $("#F2")[0].innerHTML="证件号码"
+              $("#F3")[0].innerHTML="身份证地址"
+              $("#F4")[0].innerHTML="邮寄地址"
+              $("#F5")[0].innerHTML="电话号码"
+              $("#F6")[0].innerHTML="抵押公司名称"
+              $("#F7")[0].innerHTML="抵押公司统一社会代码"
+              $("#F8")[0].innerHTML="抵押公司地址"
+              $("#F9")[0].innerHTML="抵押公司电话"
+              $("#F10")[0].innerHTML="抵押公司邮编"
+              $("#F11")[0].innerHTML="一键填写登记信息"
+              $("#F12")[0].innerHTML="一键填写抵押信息"
+
+            }else {
+              $("#F1")[0].innerHTML="姓名"
+              $("#F2")[0].innerHTML="车牌号"
+              $("#F3")[0].innerHTML="号牌种类"
+              $("#F4")[0].innerHTML="车辆识别代码"
+              $("#F5")[0].innerHTML="发动机"
+              $("#F6")[0].innerHTML="加粤车牌号"
+              $("#F7")[0].innerHTML="一键填写档案二维码信息"
+              $("#F8")[0].innerHTML="一键填写归档软件"
+              $("#F9")[0].innerHTML=""
+              $("#F10")[0].innerHTML=""
+              $("#F11")[0].innerHTML=""
+              $("#F12")[0].innerHTML=""
+            }
+        });
+
+        table.render({
+            elem: '#LAY_table_user'
+            ,url: 'out_query'
+            ,width: 600
+            ,cols: [[
+              {checkbox: true, fixed: true}
+              ,{field:'id', title: 'ID', width:80, sort: true, fixed: true}
+              ,{field:'name', title: '姓名', width:80}
+              ,{field:'cardNo', title: '证件号码', width:180, sort: true}
+              ,{field:'WPMI', title: '车辆识别代码', }
+            ]]
+            ,id: 'user_table'
+            ,page: true
+            ,height: 310
+          });
+
+        $("#add_mortgage").on("click",function (){
+            var content = `<div>
+        <form class="layui-form" action="">
+           <div class="layui-form-item">
+            <label class="layui-form-label">公司名</label>
+            <div class="layui-input-block">
+              <input type="text" name="company" lay-verify="required" style="width: 300px" autocomplete="off" placeholder="" class="layui-input">
+            </div>
+          </div>
+           <div class="layui-form-item">
+            <label class="layui-form-label">统一社会信用代码</label>
+            <div class="layui-input-block">
+              <input type="text" name="code" lay-verify="required" autocomplete="off" style="width: 300px"  placeholder="" class="layui-input">
+            </div>
+          </div>
+           <div class="layui-form-item">
+            <label class="layui-form-label">固话</label>
+            <div class="layui-input-block">
+              <input type="text" name="phone" lay-verify="required" autocomplete="off" style="width: 300px"  placeholder="" class="layui-input">
+            </div>
+          </div>
+           <div class="layui-form-item">
+            <label class="layui-form-label">地址</label>
+            <div class="layui-input-block">
+              <input type="text" name="address" lay-verify="required" autocomplete="off" style="width: 300px"  placeholder="" class="layui-input">
+            </div>
+            </div>
+             <div class="layui-form-item">
+            <label class="layui-form-label">邮编</label>
+            <div class="layui-input-block">
+              <input type="text" name="postcode" lay-verify="required" autocomplete="off" style="width: 300px"  placeholder="" class="layui-input">
+            </div>
+            </div>
+           <div class="layui-form-item">
+            <div class="layui-input-block">
+              <button type="submit" class="layui-btn" lay-submit="" lay-filter="submit">立即提交</button>
+              <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+          </div>
+
+        </form>
+        </div>`
+            layer.open({  title: "抵押公司",
+              type: 1,
+              area: ['500px', '420px'],
+              content: content})
+        })
+        $("#update_mortgage").on("click",function (){
+            var info = window.mortgage[$("#mortgage").val()]
+            var content = `<div>
+        <form class="layui-form" action="">
+           <div class="layui-form-item">
+            <label class="layui-form-label">公司名</label>
+            <div class="layui-input-block">
+              <input type="text" name="company" value="${info.company}" lay-verify="required" style="width: 300px" autocomplete="off" placeholder="" class="layui-input">
+            </div>
+          </div>
+           <div class="layui-form-item">
+            <label class="layui-form-label">统一社会信用代码</label>
+            <div class="layui-input-block">
+              <input type="text" name="code" value="${info.code}" lay-verify="required" autocomplete="off" style="width: 300px"  placeholder="" class="layui-input">
+            </div>
+          </div>
+           <div class="layui-form-item">
+            <label class="layui-form-label">固话</label>
+            <div class="layui-input-block">
+              <input type="text" name="phone" value="${info.phone}"  lay-verify="required" autocomplete="off" style="width: 300px"  placeholder="" class="layui-input">
+            </div>
+          </div>
+           <div class="layui-form-item">
+            <label class="layui-form-label">地址</label>
+            <div class="layui-input-block">
+              <input type="text" name="address" value="${info.address}"  lay-verify="required" autocomplete="off" style="width: 300px"  placeholder="" class="layui-input">
+            </div>
+            </div>
+             <div class="layui-form-item">
+            <label class="layui-form-label">邮编</label>
+            <div class="layui-input-block">
+              <input type="text" name="postcode" value="${info.postcode}" lay-verify="required" autocomplete="off" style="width: 300px"  placeholder="" class="layui-input">
+            </div>
+            </div>
+           <div class="layui-form-item">
+            <div class="layui-input-block">
+              <button type="submit" class="layui-btn" lay-submit="" lay-filter="submit_update">立即提交</button>
+              <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+          </div>
+
+        </form>
+        </div>`
+            layer.open({  title: "抵押公司",
+              type: 1,
+              area: ['500px', '420px'],
+              content: content})
+        })
+          // 搜索
+          $('.Table .layui-btn').on('click', function(){
+             var key = $('#search');
+
+              //执行重载
+              table.reload('user_table', {
+               page: {
+                  curr: 1 //重新从第 1 页开始
+                    }
+                    ,where: {
+                      key: key.val()
+                    }
+              }, 'data');
+          });
+
+          table.on('row(user)', function(obj){
+                var data = obj.data;
+                window.user_id = data.id
+                    $.ajax({
+                        type: "post",
+                        url: "update_key",
+                        data: {
+                            "id": data.id,
+                            "module":window.card,
+                            "mortgage_id": $("#mortgage").val()
+                        },
+                        async:true, // 异步请求
+                        dataType: 'json', // 返回对象
+                        success: function(data) {
+                            layer.msg("复制成功,可以粘贴")
+                        },
+                        error: function(data) {
+                            layer.msg("提交失败")
+                        }
+                    })
+                //标注选中样式
+                obj.tr.addClass('layui-bg-orange').siblings().removeClass('layui-bg-orange');
+              });
+    })
+
+</script>
+
+
+</body>
+</html>

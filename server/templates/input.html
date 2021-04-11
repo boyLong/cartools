@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>录入</title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+   <META HTTP-EQUIV="pragma" CONTENT="no-cache">
+  <META HTTP-EQUIV="Cache-Control" CONTENT="no-cache, must-revalidate">
+  <META HTTP-EQUIV="expires" CONTENT="0">
+  <link rel="stylesheet" href="/static/layui/css/layui.css" media="all">
+  <style>
+    td .layui-form-select {
+	     margin-top: -10px;
+	     margin-left: -15px;
+	     margin-right: -15px;
+	 }
+  </style>
+  <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
+</head>
+<body>
+<div class="layui-row">
+    <div class="layui-col-md3">
+    <div class="layui-upload-drag" id="upload_wenjuanxing">
+          <i class="layui-icon"></i>
+          <p>拖动或点击上传问卷星数据</p>
+
+    </div>
+    </div>
+    <div class="layui-col-md3">
+
+    <div style="margin-top: 10px; margin-bottom: 10px;">
+
+        <button type="button" class="layui-btn" id="input_wenjuanxing"><i class="layui-icon"></i>导入问卷星数据</button>
+        <button type="button" class="layui-btn" id="input_paizheng"><i class="layui-icon"></i>导入牌证数据</button>
+    </div>
+    </div>
+
+    <div class="layui-col-md3">
+        <div class="layui-upload-drag" id="upload_paizheng">
+              <i class="layui-icon"></i>
+              <p>拖动或点击上传牌证数据</p>
+
+        </div>
+    </div>
+
+    <div class="layui-col-md3">
+
+        <div style="margin-top: 10px; margin-bottom: 10px;">
+            <button type="button" class="layui-btn" id="remarks_view"> 修改报销备注信息</button>
+            <button type="button" class="layui-btn" id="numbers_view"> 修改号码种类信息</button>
+        </div>
+    </div>
+</div>
+<div class="table" style="margin-top: 10px">
+  <div class="layui-inline">
+    <input class="layui-input" name="key" id="key" autocomplete="off">
+  </div>
+  <button class="layui-btn" data-type="search" id="search">搜索</button>
+    <button type="button" class="layui-btn" style="float:right; margin-right: 100px" id="add_info" onclick="add_info()"> 手动添加信息</button>
+
+</div>
+
+<script type="text/html" id="export">
+    <a class="layui-btn layui-btn-xs"  lay-event="down" >导出申请表</a>
+    <a class="layui-btn layui-btn-xs"  lay-event="downwei" >导出委托书</a>
+    <a class="layui-btn layui-btn-xs"  lay-event="clearCert" >清空合格证</a>
+    <a class="layui-btn layui-btn-xs"  lay-event="clearBill" >清空发票</a>
+
+
+</script>
+
+<table class="layui-hide" id="LAY_table_user" lay-filter="user"></table>
+
+<script src="/static/layui/layui.js" charset="utf-8"></script>
+<script src="/static/layui/upload.js" charset="utf-8"></script>
+
+<script>
+function down(data){
+  console.log(data)
+}
+</script>
+  
+<!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
+<script>
+  
+layui.use(['table',"upload","form"], function(){
+    var table = layui.table,upload=layui.upload,form=layui.form;
+    var $ = layui.jquery;
+
+    $.ajax({
+            type: "get",
+            url: "remarks",
+
+            async:false, // 异步请求
+            dataType: 'json', // 返回对象
+            success: function(res) {
+                   window.remarks = res.data
+            },
+        error: function(data) {
+            layer.msg("提交失败")
+        }
+    })
+        $.ajax({
+            type: "get",
+            url: "numberType",
+
+            async:false, // 异步请求
+            dataType: 'json', // 返回对象
+            success: function(res) {
+                   window.numberType = res.data
+            },
+        error: function(data) {
+            layer.msg("提交失败")
+        }
+    })
+    function NumberSelect(d) {
+            var option = ''
+           for(let o of window.numberType){
+               option += `<option value="${o.NumberType}">${o.NumberType}</option>`
+           }
+            return '<select name="status" lay-filter="stateSelect" lay-verify="required" data-state="' + d.carType + '" data-value="' + d.id + '" >' +
+                option+
+                  '      </select>';
+        }
+
+
+    function remarksSelect(d) {
+           var option = ''
+           for(let o of window.remarks){
+               option += `<option value="${o.remark}">${o.remark}</option>`
+           }
+            return '<select name="status" lay-filter="remarkSelect" lay-verify="required" data-state="' + d.remark + '" data-value="' + d.id + '" >' +
+                        option + '</select>';
+        }
+
+    function postcode(d) {
+        var info ={"523000":"东莞市 523000",
+        "510000":"广州市 510000",
+        "518000":"深圳市 518000",
+        "528000":"佛山市 528000",
+        "516000":"惠州市 516000",
+        "528400":"中山市 528400",
+        "519000":"珠海市 519000",
+        "511500":"清远市 511500",
+        "521000":"潮州市 521000",
+        "525000":"茂名市 525000",
+        "526000":"肇庆市 526000",
+        "514000":"梅州市 514000",
+        "516600":"汕尾市 516600",
+        "517000":"河源市 517000",
+        "529500":"阳江市 529500",
+        "524000":"湛江市 524000",
+        "529000":"江门市 529000",
+        "515000":"汕头市 515000",
+        "512000":"韶关市 512000",
+        "522000":"揭阳市 522000",
+        "527300":"云浮市 527300"}
+
+           var option = ''
+           for(let o in info){
+               option += `<option value="${o}">${info[o]}</option>`
+           }
+            return '<select name="status" lay-filter="postcodesSelect" lay-verify="required" data-state="' + d.postcode + '" data-value="' + d.id + '" >' +
+                        option + '</select>';
+
+        }
+    function cretInput(d){
+           if(d.certText){
+
+             return  `<div class="certText_`+d.id+`">`+d.certText+`</div>`
+           }else{
+             return `
+              <div class="certText_`+d.id+`">
+             <div class="layui-input-inline" style= "margin-top: -5px; margin-left: -10px;">
+
+              <input type="text" name="cert" onchange="upperCert(this.value,`+d.id+`)" placeholder="扫描合格证" autocomplete="off" class="layui-input" style="width: 160px;">
+            </div >
+            <div class="layui-input-inline" style= "margin-top: -5px; margin-left: 5px;">
+
+              <button type="button" class="layui-btn layui-btn-sm Manual" onclick="upperCertManual(`+d.id+`)">手动</button>
+              </div>
+              </div>
+             `
+           }
+      }
+
+    function billInput(d){
+           if(d.billText){
+
+             return  `<div class="bill_`+d.id+`">`+d.billText+`</div>`
+           }else{
+             return `
+              <div class="bill_`+d.id+`">
+             <div class="layui-input-inline" style= "margin-top: -5px; margin-left: -10px;">
+
+              <input type="text" name="cert" onchange="upperBill(this.value,`+d.id+`)" placeholder="扫描发票" autocomplete="off" class="layui-input" style="width: 160px;">
+            </div >
+            <div class="layui-input-inline" style= "margin-top: -5px; margin-left: 5px;">
+
+              <button type="button" class="layui-btn layui-btn-sm Manual" onclick="upperBillManual(`+d.id+`)">手动</button>
+              </div>
+              </div>
+             `
+           }
+      }
+  //方法级渲染
+  table.render({
+    elem: '#LAY_table_user',
+    url:"query"
+    ,cols: [[
+        {field:'date', title: '提交答卷日期', width:170, sort: true,}
+      ,{field:'name', title: '姓名', width:80}
+      ,{field:'cardNo', title: '证件号码', width:180}
+      ,{field:'text', title: '合格证扫码文本框', width:220, templet:cretInput}
+      ,{field:'text', title: '发票扫码文本框', width:220, templet:billInput}
+      ,{field:'tax', title: '价税合计', width:90,edit:"text"}
+      , {field:'carType', title:'号码种类', width:90,  templet:NumberSelect}
+      , {field:'postcode', title:'邮编', width:133,  templet:postcode}
+
+      , {field:'apply', title:'报销备注', width:90,  templet:remarksSelect}
+
+      ,{field:'saleName', title: '销售', width:80}
+      ,{fixed: 'right', title:'操作', width:350, toolbar: '#export',}
+
+    ]]
+    ,totalRow: true
+    ,id: 'info'
+    ,page: true
+    ,height:500
+    , done: function (res, curr, count) {
+                var tableElem = this.elem.next('.layui-table-view');
+                count || tableElem.find('.layui-table-header').css('overflow', 'auto');
+                layui.each(tableElem.find('select[name="status"]'), function (index, item) {
+                    var elem = $(item);
+                    elem.val(elem.data('state')).parents('div.layui-table-cell').css('overflow', 'visible');
+                });
+                form.render();//刷新表单
+            }
+  });
+
+      table.on('edit(user)', function(obj){
+
+        var value = obj.value //得到修改后的值
+
+        ,data = obj.data //得到所在行所有键值
+
+          if(isNaN(value)){
+              layer.msg("不能包含非数字")
+              return
+          }
+             $.ajax({
+            type: "post",
+            url: "update_tax",
+            data: {
+                "id": data.id,
+                "tax": value
+            },
+            async:true, // 异步请求
+            dataType: 'json', // 返回对象
+            success: function(res) {
+                         layer.msg("修改成功")
+
+            },
+            error: function(data) {
+                layer.msg("提交失败")
+            }
+        })
+       });
+
+    $("#search").on('click', function(data) {
+        var key = $("#key").val();
+         table.reload('info', {
+              page: {
+                curr: 1 //重新从第 1 页开始
+              }
+              ,where: {
+                key: key
+           }
+        }, 'data')
+   });
+
+     $("#remarks_view").on('click', function(data) {
+
+
+          var option = ''
+           for(let o of window.remarks){
+               option += `<div style="margin-top: 2px">
+                <label class="layui-form-label">${o.remark}</label> <button type="button" class="layui-btn   layui-btn-danger" onclick="del_remarks(${o.id})" lay-submit="" lay-filter="del_remarks">删除</button>
+
+                </div>`
+           }
+
+       form.on('submit(add_remarks)', function(data){
+                data = {
+                      remark:data.field.remark,
+                  }
+                $.ajax({
+                     type: "post",
+                    url: "add_remark",
+                    data: data,
+                    async:true, // 异步请求
+                     success: function(data) {
+                       location.reload();
+
+                    },
+                    error: function(data) {
+                        layer.msg("提交失败")
+                    }
+                })
+                return false
+            }
+            )
+        var contet = `<div>
+        <form class="layui-form" action="">
+           <div class="layui-form-item">
+            <label class="layui-form-label">备注报销</label>
+            <div class="layui-input-block">
+              <input type="text" name="remark" lay-verify="required" style="width: 300px" autocomplete="off" placeholder="" class="layui-input">
+            </div>
+          </div>
+
+           <div class="layui-form-item">
+            <div class="layui-input-block">
+              <button type="submit" class="layui-btn" lay-submit="" lay-filter="add_remarks">添加</button>
+            </div>
+          </div>
+        </form>
+        </div>`
+         contet+=option
+        layer.open({
+                title: "备注报销",
+              type: 1,
+              area: ['500px', '320px'],
+              content: contet //这里content是一个普通的String
+            });
+   });
+
+        $("#numbers_view").on('click', function(data) {
+
+
+          var option = ''
+           for(let o of window.numberType){
+               option += `<div style="margin-top: 2px">
+                <label class="layui-form-label">${o.NumberType}</label> <button type="button" class="layui-btn   layui-btn-danger" onclick="del_numbers(${o.id})" lay-submit="" lay-filter="del_numbers">删除</button>
+
+                </div>`
+           }
+
+       form.on('submit(add_numbers)', function(data){
+                data = {
+                      numberType:data.field.numberType,
+                  }
+                $.ajax({
+                     type: "post",
+                    url: "add_number",
+                    data: data,
+                    async:true, // 异步请求
+                     success: function(data) {
+                       location.reload();
+
+                    },
+                    error: function(data) {
+                        layer.msg("提交失败")
+                    }
+                })
+                return false
+            }
+            )
+        var contet = `<div>
+        <form class="layui-form" action="">
+           <div class="layui-form-item">
+            <label class="layui-form-label">号码种类</label>
+            <div class="layui-input-block">
+              <input type="text" name="numberType" lay-verify="required" style="width: 300px" autocomplete="off" placeholder="" class="layui-input">
+            </div>
+          </div>
+
+           <div class="layui-form-item">
+            <div class="layui-input-block">
+              <button type="submit" class="layui-btn" lay-submit="" lay-filter="add_numbers">添加</button>
+            </div>
+          </div>
+        </form>
+        </div>`
+         contet+=option
+        layer.open({
+                title: "h号码 种类",
+              type: 1,
+              area: ['500px', '320px'],
+              content: contet //这里content是一个普通的String
+            });
+   });
+   table.on('tool(user)', function(obj){
+    var data = obj.data;
+    if(obj.event === 'down'){
+             layer.msg("开始导出")
+            $.ajax({
+            type: "get",
+            url: "to_excel",
+            data: {
+                "id": data.id,
+            },
+            async:true, // 异步请求
+            dataType: 'json', // 返回对象
+            success: function(data) {
+                layer.msg(data.msg)
+            },
+            error: function(data) {
+                layer.msg("提交失败")
+            }
+        })
+
+    }else if (obj.event==="downwei"){
+        layer.msg("开始导出")
+            $.ajax({
+            type: "get",
+            url: "to_excel_wei",
+            data: {
+                "id": data.id,
+            },
+            async:true, // 异步请求
+            dataType: 'json', // 返回对象
+            success: function(data) {
+                layer.msg(data.msg)
+            },
+            error: function(data) {
+                layer.msg("提交失败")
+            }
+        })
+    }
+    else if(obj.event==="clearCert"){
+         $.ajax({
+            type: "post",
+            url: "del_cert",
+            data: {
+                "id": data.id,
+            },
+            async:true, // 异步请求
+            dataType: 'json', // 返回对象
+            success: function(res) {
+                if (res.code===0){
+                    layer.msg(res.msg)
+                    $(".certText_"+data.id)[0].innerHTML=`
+
+                             <div class="layui-input-inline" style= "margin-top: -5px; margin-left: -10px;">
+
+                              <input type="text" name="cert" onchange="upperCert(this.value,`+data.id+`)" placeholder="扫描合格证" autocomplete="off" class="layui-input" style="width: 160px;">
+                            </div >
+                            <div class="layui-input-inline" style= "margin-top: -5px; margin-left: 5px;">
+
+                              <button type="button" class="layui-btn layui-btn-sm Manual" onclick="upperCertManual(`+data.id+`)">手动</button>
+                              </div>
+
+                             `
+                }
+            },
+            error: function(data) {
+                layer.msg("提交失败")
+            }
+        })
+    }
+    else if(obj.event==="clearBill"){
+         $.ajax({
+            type: "post",
+            url: "del_bill",
+            data: {
+                "id": data.id,
+            },
+            async:true, // 异步请求
+            dataType: 'json', // 返回对象
+            success: function(res) {
+                if (res.code===0){
+                    layer.msg(res.msg)
+                    $(".bill_"+data.id)[0].innerHTML=`
+
+                         <div class="layui-input-inline" style= "margin-top: -5px; margin-left: -10px;">
+
+                          <input type="text" name="cert" onchange="upperBill(this.value,`+data.id+`)" placeholder="扫描发票" autocomplete="off" class="layui-input" style="width: 160px;">
+                        </div >
+                        <div class="layui-input-inline" style= "margin-top: -5px; margin-left: 5px;">
+
+                          <button type="button" class="layui-btn layui-btn-sm Manual" onclick="upperBillManual(`+data.id+`)">手动</button>
+                          </div>
+
+                         `
+                }
+            },
+            error: function(data) {
+                layer.msg("提交失败")
+            }
+        })
+    }
+
+  });
+
+
+  form.on('select(stateSelect)', function (data) {//修改类型
+            let id = data.elem.dataset.value; //当前数据的id
+            let carType = data.elem.value; //当前字段变化的值
+            $.ajax({
+            type: "post",
+            url: "update_car_type",
+            data: {
+                "id": id,
+                "carType":carType
+            },
+            async:true, // 异步请求
+            dataType: 'json', // 返回对象
+            success: function(data) {
+                layer.msg(data.msg)
+            },
+            error: function(data) {
+                layer.msg("提交失败")
+            }
+        })
+            console.log(id,status)
+            //修改状态
+ 
+        });
+    form.on("select(postcodesSelect)",function (data){
+            let id = data.elem.dataset.value; //当前数据的id
+            let postcode = data.elem.value; //当前字段变化的值
+            $.ajax({
+            type: "post",
+            url: "up_postcode",
+            data: {
+                "id": id,
+                "postcode":postcode
+            },
+            async:true, // 异步请求
+            dataType: 'json', // 返回对象
+            success: function(data) {
+                layer.msg(data.msg)
+            },
+            error: function(data) {
+                layer.msg("提交失败")
+            }
+        })
+        }
+    )
+    form.on('select(remarkSelect)', function (data) {//修改类型
+            let id = data.elem.dataset.value; //当前数据的id
+            let remark = data.elem.value; //当前字段变化的值
+            $.ajax({
+            type: "post",
+            url: "up_remark",
+            data: {
+                "id": id,
+                "remark":remark
+            },
+            async:true, // 异步请求
+            dataType: 'json', // 返回对象
+            success: function(data) {
+                layer.msg(data.msg)
+            },
+            error: function(data) {
+                layer.msg("提交失败")
+            }
+        })
+
+        });
+});
+</script>
+
+</body>
+</html>

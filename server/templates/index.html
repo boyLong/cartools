@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>服务站数据处理器</title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <link rel="stylesheet" href="/static/layui/css/layui.css" media="all">
+  <META HTTP-EQUIV="pragma" CONTENT="no-cache">
+  <META HTTP-EQUIV="Cache-Control" CONTENT="no-cache, must-revalidate">
+  <META HTTP-EQUIV="expires" CONTENT="0">
+  <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
+</head>
+<body>
+              
+<div class="layui-tab layui-tab-card">
+  <ul class="layui-tab-title">
+    <li class="layui-this">录入</li>
+    <li>输出</li>
+    <li>管理</li>
+  </ul>
+  <div class="layui-tab-content"  >
+    <div class="layui-tab-item layui-show" ><iframe src="input.html" width="100%" height="800" frameBorder=0 id="input"></iframe></div>
+     <div class="layui-tab-item" ><iframe src="out.html" width="100%" height="800" frameBorder=0 id="out"></iframe></div>
+
+    <div class="layui-tab-item" ><iframe src="manage.html" width="100%" height="800" frameBorder=0 id="manage"></iframe></div>
+ 
+  </div>
+</div>
+
+
+<script src="/static/layui/layui.js" charset="utf-8"></script>
+<!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
+<script>
+layui.use('element', function(){
+  var $ = layui.jquery ,element = layui.element; 
+  layui.element.init();
+
+});
+</script>
+
+</body>
+</html>
