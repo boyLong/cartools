@@ -86,7 +86,7 @@ function down(data){
 <script>
   
 layui.use(['table',"upload","form"], function(){
-    var table = layui.table,upload=layui.upload,form=layui.form;
+    var table = layui.table,form=layui.form;
     var $ = layui.jquery;
 
     $.ajax({
@@ -287,7 +287,9 @@ layui.use(['table',"upload","form"], function(){
           var option = ''
            for(let o of window.remarks){
                option += `<div style="margin-top: 2px">
-                <label class="layui-form-label">${o.remark}</label> <button type="button" class="layui-btn   layui-btn-danger" onclick="del_remarks(${o.id})" lay-submit="" lay-filter="del_remarks">删除</button>
+                <label class="layui-form-label">${o.remark}</label>
+            <button type="button" class="layui-btn   layui-btn-danger" onclick="del_remarks(${o.id})" lay-submit="" lay-filter="del_remarks">删除</button>
+            <input style="margin-left: 20px " type="radio"  onclick="set_default_remarks(${o.id})"  lay-filter="set_default_remarks" name="default_remarks" value="${o.remark}" title="${o.remark}" ${o.default ? "checked": "" }>
 
                 </div>`
            }
@@ -295,6 +297,7 @@ layui.use(['table',"upload","form"], function(){
        form.on('submit(add_remarks)', function(data){
                 data = {
                       remark:data.field.remark,
+                      default:0
                   }
                 $.ajax({
                      type: "post",
@@ -395,22 +398,88 @@ layui.use(['table',"upload","form"], function(){
    table.on('tool(user)', function(obj){
     var data = obj.data;
     if(obj.event === 'down'){
-             layer.msg("开始导出")
-            $.ajax({
-            type: "get",
-            url: "to_excel",
-            data: {
-                "id": data.id,
-            },
-            async:true, // 异步请求
-            dataType: 'json', // 返回对象
-            success: function(data) {
-                layer.msg(data.msg)
-            },
-            error: function(data) {
-                layer.msg("提交失败")
+            if (data.type=="个人牌"){
+                  layer.msg("开始导出")
+                    $.ajax({
+                    type: "get",
+                    url: "to_excel",
+                    data: {
+                        "id": data.id,
+                    },
+                    async:true, // 异步请求
+                    dataType: 'json', // 返回对象
+                    success: function(data) {
+                        layer.msg(data.msg)
+                    },
+                    error: function(data) {
+                        layer.msg("提交失败")
+                    }
+                })
+                    }
+            else{
+                layer.open({
+                type: 1
+                ,content: '<div style="padding: 20px 100px;">'+ "请核对公司名称" +'</div>'
+                ,btn: '关闭'
+                ,btnAlign: 'c' //按钮居中
+                ,shade: 0 //不显示遮罩
+                ,yes: function(){
+                  layer.closeAll();
+                  if(data.name.includes("东莞")){
+                       layer.msg("包含东莞开始导出")
+                       $.ajax({
+                    type: "get",
+                    url: "to_excel",
+                    data: {
+                        "id": data.id,
+                    },
+                    async:true, // 异步请求
+                    dataType: 'json', // 返回对象
+                    success: function(data) {
+                        layer.msg(data.msg)
+                    },
+                    error: function(data) {
+                        layer.msg("提交失败")
+                    }
+                })
+
+                  }else {layer.open({
+                      type: 1
+                     ,content: '<div style="padding: 20px 100px;">'+ "公司名字不包含东莞" +'</div>'
+                      ,btn: '关闭'
+                               ,btnAlign: 'c' //按钮居中
+                ,shade: 0 //不显示遮罩
+                      ,yes:function (){
+                           layer.closeAll();
+                                                 layer.msg("公司名字没有包含东莞的数据开始导出")
+
+                                    $.ajax({
+                        type: "get",
+                        url: "to_excel",
+                        data: {
+                            "id": data.id,
+                        },
+                        async:true, // 异步请求
+                        dataType: 'json', // 返回对象
+                        success: function(data) {
+                            layer.msg(data.msg)
+                        },
+                        error: function(data) {
+                            layer.msg("提交失败")
+                        }
+                    })
+
+
+                          }
+                      }
+
+                  )
+                  }
+                }
+              })
             }
-        })
+
+
 
     }else if (obj.event==="downwei"){
         layer.msg("开始导出")

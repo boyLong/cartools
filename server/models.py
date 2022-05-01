@@ -7,7 +7,6 @@ class BaseInfo(models.Model):
     carType = models.TextField(verbose_name='号码种类', default="小型汽车")
     Type = models.TextField(verbose_name='牌证类型')
     country = models.TextField(verbose_name="户籍所在地")
-    city = models.TextField(verbose_name="户籍所在城市")
     cardType = models.TextField(verbose_name="证件类型")
     name = models.CharField(max_length=30)
     cardNo = models.TextField(verbose_name="证件号", unique=True)
@@ -36,7 +35,7 @@ class BaseInfo(models.Model):
     billNumber = models.CharField(max_length=50, verbose_name="发票号码")
     billDate = models.CharField(max_length=50, verbose_name="发票日期")
     billText = models.TextField(verbose_name="发票文本")
-    remark = models.TextField(verbose_name='号码种类', default="聚成报销")
+    remark = models.TextField(verbose_name='号码种类')
     class Meta:
         ordering = ['-id']
 
@@ -52,6 +51,8 @@ class Mortgage(models.Model):
 
 class Remarks(models.Model):
     remark = models.CharField(max_length=50, verbose_name="备注")
+    default = models.IntegerField(default=0)
+
 
 class NumberTypeS(models.Model):
     NumberType = models.CharField(max_length=50, verbose_name="号码种类")

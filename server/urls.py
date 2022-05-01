@@ -56,6 +56,7 @@ urlpatterns = [
     path("del_number", del_number),
     path("add_number", add_number),
     path("numberType", numberType),
+    path("set_default_remark", set_default_remark)
 ]
 
 urlpatterns += static.static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

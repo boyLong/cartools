@@ -273,6 +273,23 @@ function upperCertManual(id){
 
 }
 
+function set_default_remarks(o){
+     var $ = layui.jquery;
+     $.ajax({
+        type: "post",
+        url: "set_default_remark",
+        data: {"id":o},
+        async:true, // 异步请求
+        dataType: 'json', // 返回对象
+        success: function(data) {
+            layer.msg(data.msg)
+            location.reload()
+        },
+        error: function(data) {
+            layer.msg("提交失败")
+        }
+    })
+}
 function del_remarks(o){
       var $ = layui.jquery;
 

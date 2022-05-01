@@ -19,15 +19,17 @@ def add_info(request):
         phone = req["phone"]
         address = req["address"]
         saleName = req["saleName"]
+        remark = Remarks.objects.filter(default=1).first()
+
         if name:
             base_info = BaseInfo( date=datetime.datetime.now(), Type="个人牌",
                                  name=name, phone=phone, address=address, saleName=saleName,
-                                 cardNo=cardNo, CardAddress=CardAddress,)
+                                 cardNo=cardNo, CardAddress=CardAddress,remark=remark.remark)
             base_info.save()
         else:
             base_info = BaseInfo(date=datetime.datetime.now(), Type="公司牌",
                                  name=company, phone=phone, address=address, saleName=saleName,
-                                 cardNo=cardNo, CardAddress=CardAddress, agent=agent)
+                                 cardNo=cardNo, CardAddress=CardAddress, agent=agent,remark=remark.remark)
             base_info.save()
         return JsonResponse({"code": 0, "msg": "成功"})
 
@@ -41,49 +43,47 @@ def import_wjx(request):
                     continue
                 date = datetime.datetime.strptime(item[1], "%Y/%m/%d %H:%M:%S")
                 Type = item[6]
-                country = item[7]
-                city = item[8]
-                cardType = item[9]
-                name = item[10]
-                phone = item[25]
-                address = item[26]
-                postcode = item[27].split()[-1]
-                saleName = item[28]
-                if Type == "个人牌":
-                    if "中国内地" in country:
-                        if "非广东省" in city:
-                            cardNo = item[11]
-                            CardAddress = item[13]
-                        else:
-                            cardNo = item[11]
-                            CardAddress = item[12]
-                    elif "港澳台" in country:
+
+                phone = item[23]
+                address = item[24].replace("-", '') + item[25]
+                postcode = item[26].split()[-1]
+                saleName = item[27]
+                if Type == "个人牌子":
+                    country = item[7]
+                    name = item[9]
+                    if country == '中国内地':
+                        cardType = '身份证'
+                        cardNo = item[10]
+                        CardAddress = item[11]
+                    elif '港澳台' in country:
+                        cardType = item[8]
                         if '居住证' in cardType:
-                            cardNo = item[14]
-                            CardAddress = item[17]
+                            cardNo = item[12]
+                            CardAddress = item[15]
                         else:
-                            cardNo = item[15]
-                            CardAddress = item[18]
+                            cardNo = item[13]
+                            CardAddress = item[16]
                     else:
-                        cardNo = item[16]
-                        CardAddress = item[18]
+                        cardType = '护照'
+                        cardNo = item[14]
+                        CardAddress = item[16]
                     try:
-                        base_info =BaseInfo(date=date,Type=Type,country=country,city=city,cardType=cardType,
+                        base_info =BaseInfo(date=date,Type=Type,country=country, cardType=cardType,
                                  name=name,phone=phone,address=address,postcode=postcode,saleName=saleName,
                                  cardNo=cardNo,CardAddress=CardAddress)
                         base_info.save()
                     except Exception as e:
                         print(e)
                 elif Type == "公司牌":
-                    name = item[19]
-                    cardType = item[20]
-                    if "信用代码" in item[20]:
-                        cardNo =item[21]
-                    else: cardNo = item[22]
-                    CardAddress = item[23]
-                    agent = item[24]
+                    name = item[17]
+                    cardType = item[18]
+                    if "信用代码" in cardType:
+                        cardNo =item[19]
+                    else: cardNo = item[20]
+                    CardAddress = item[21]
+                    agent = item[22]
                     try:
-                        base_info =BaseInfo(date=date,Type=Type,country=country,city=city,cardType=cardType,
+                        base_info =BaseInfo(date=date,Type=Type,country="country", cardType=cardType,
                                  name=name,phone=phone,address=address,postcode=postcode,saleName=saleName,
                                  cardNo=cardNo,CardAddress=CardAddress,agent=agent)
                         base_info.save()
@@ -157,7 +157,8 @@ def query(request):
             "tax": item.tax,
             "postcode":item.postcode,
             "billText": item.billText,
-            "remark":item.remark
+            "remark":item.remark,
+            "type":item.Type
         }
         data.append(item_res)
     return JsonResponse({ "code": 0, "msg": "成功", "count": total, "data": data})
@@ -304,7 +305,8 @@ def remarks(request):
     for remark in rs:
         item.append({
             "id":remark.id,
-            "remark":remark.remark
+            "remark":remark.remark,
+            "default": remark.default
         })
 
     return JsonResponse({"code": 0, "msg": "成功","data": item})
@@ -315,6 +317,14 @@ def up_remark(request):
     remark = req.get("remark")
     base_id = req.get("id")
     BaseInfo.objects.filter(id=base_id).update(remark=remark)
+    return JsonResponse({"code": 0, "msg": "成功"})
+
+
+def set_default_remark(request):
+
+    remark = request.POST.get("id")
+    Remarks.objects.filter(default=1).update(default=0)
+    Remarks.objects.filter(id=remark).update(default=1)
     return JsonResponse({"code": 0, "msg": "成功"})
 
 
